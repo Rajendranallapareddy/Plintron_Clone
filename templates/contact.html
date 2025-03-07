@@ -1,0 +1,195 @@
+{% extends "layout.html" %}
+
+{% block title %}Plintron Technical Solutions - Contact Us{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Contact Us</h1>
+    <p>Get in touch with our team</p>
+</div>
+
+<section class="contact-section">
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <p>Reach out to us with any questions or inquiries</p>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Address</h3>
+                    <p>{{ company_info.address }}</p>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Phone</h3>
+                    <p>{{ company_info.phone }}</p>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Email</h3>
+                    <p>{{ company_info.email }}</p>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Working Hours</h3>
+                    <p>{{ company_info.working_hours }}</p>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    {% if company_info.facebook %}
+                    <a href="{{ company_info.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    {% endif %}
+                    
+                    {% if company_info.twitter %}
+                    <a href="{{ company_info.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                    
+                    {% if company_info.linkedin %}
+                    <a href="{{ company_info.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    {% endif %}
+                    
+                    {% if company_info.instagram %}
+                    <a href="{{ company_info.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <p>Fill out the form below and we'll get back to you as soon as possible</p>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="map-section">
+    <div class="section-title">
+        <h2>Our Location</h2>
+        <p>Visit us at our office</p>
+    </div>
+    
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.639290621064!2d-122.08374492392836!3d37.42199997210201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x29cdf01a44fc687f!2sGoogle%20Building%2040%2C%20Mountain%20View%2C%20CA%2094043%2C%20USA!5e0!3m2!1sen!2sin!4v1682956639014!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>
+
+<section class="faq-section">
+    <div class="section-title">
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers to common questions</p>
+    </div>
+    
+    <div class="faq-accordion">
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>How quickly can you respond to inquiries?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>We typically respond to all inquiries within 24 hours during business days.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>Do you offer remote consultations?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>Yes, we offer both in-person and remote consultations to accommodate your preferences and location.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>How can I schedule an appointment?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>You can schedule an appointment by registering on our website and using our online booking system, or by contacting us directly via phone or email.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            const toggle = item.querySelector('.faq-toggle');
+            
+            question.addEventListener('click', () => {
+                answer.classList.toggle('active');
+                toggle.innerHTML = answer.classList.contains('active') ? 
+                    '<i class="fas fa-minus"></i>' : '<i class="fas fa-plus"></i>';
+            });
+        });
+        
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real application, you would send the form data to the server
+            // For this demo, we'll just show a success message
+            alert('Thank you for your message! We will get back to you soon.');
+            contactForm.reset();
+        });
+    });
+</script>
+{% endblock %}

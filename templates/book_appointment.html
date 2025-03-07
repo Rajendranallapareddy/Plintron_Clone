@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+
+{% block title %}Plintron Technical Solutions - Book Appointment{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Book an Appointment</h1>
+    <p>Schedule a consultation with our experts</p>
+</div>
+
+<section class="booking-section">
+    <div class="booking-container">
+        <div class="booking-form">
+            <form method="POST" action="{{ url_for('book_appointment') }}">
+                <div class="form-group">
+                    <label for="service">Select Service</label>
+                    <select id="service" name="service" required>
+                        <option value="" disabled selected>Choose a service</option>
+                        {% for service in services %}
+                            <option value="{{ service.id }}">{{ service.name }} ({{ service.duration }} min - ${{ "%.2f"|format(service.price) }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date">Select Date</label>
+                    <input type="date" id="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Select Time</label>
+                    <select id="time" name="time" required>
+                        <option value="" disabled selected>Choose a time</option>
+                        <option value="09:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                        <option value="17:00">5:00 PM</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Additional Notes (Optional)</label>
+                    <textarea id="notes" name="notes" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Book Appointment</button>
+            </form>
+        </div>
+        
+        <div class="booking-info">
+            <h2>Booking Information</h2>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="info-content">
+                    <h3>How It Works</h3>
+                    <p>Select your preferred service, date, and time. Our team will review your request and confirm your appointment.</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Business Hours</h3>
+                    <p>Monday to Friday: 9:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Cancellation Policy</h3>
+                    <p>Appointments can be cancelled or rescheduled up to 24 hours before the scheduled time.</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Need Help?</h3>
+                    <p>Contact us at <a href="mailto:info@plintron.com">info@plintron.com</a> or call <a href="tel:+15551234567">+1 (555) 123-4567</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services-preview-section">
+    <div class="section-title">
+        <h2>Our Services</h2>
+        <p>Choose from our range of professional services</p>
+    </div>
+    
+    <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card">
+            <div class="service-icon">
+                {% if loop.index == 1 %}
+                <i class="fas fa-laptop-code"></i>
+                {% elif loop.index == 2 %}
+                <i class="fas fa-network-wired"></i>
+                {% elif loop.index == 3 %}
+                <i class="fas fa-code"></i>
+                {% else %}
+                <i class="fas fa-cloud"></i>
+                {% endif %}
+            </div>
+            <h3>{{ service.name }}</h3>
+            <p>{{ service.description }}</p>
+            <div class="service-details">
+                <span><i class="fas fa-clock"></i> {{ service.duration }} min</span>
+                <span><i class="fas fa-dollar-sign"></i> {{ "%.2f"|format(service.price) }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const serviceSelect = document.getElementById('service');
+        const dateInput = document.getElementById('date');
+        const timeSelect = document.getElementById('time');
+        
+        // Set minimum date to today
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const formattedToday = `${yyyy}-${mm}-${dd}`;
+        dateInput.min = formattedToday;
+        
+        // Highlight selected service card
+        const serviceCards = document.querySelectorAll('.service-card');
+        
+        serviceSelect.addEventListener('change', function() {
+            const selectedServiceId = this.value;
+            
+            serviceCards.forEach((card, index) => {
+                if (index + 1 == selectedServiceId) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+        });
+        
+        // Service card click to select service
+        serviceCards.forEach((card, index) => {
+            card.addEventListener('click', function() {
+                serviceSelect.value = index + 1;
+                
+                // Trigger change event
+                const event = new Event('change');
+                serviceSelect.dispatchEvent(event);
+                
+                // Scroll to form
+                document.querySelector('.booking-form').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    });
+</script>
+{% endblock %}

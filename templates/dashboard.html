@@ -1,0 +1,232 @@
+{% extends "layout.html" %}
+
+{% block title %}Plintron Technical Solutions - Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Welcome, {{ current_user.name }}!</h1>
+    <p>Manage your appointments and account</p>
+</div>
+
+<div class="dashboard-actions">
+    <a href="{{ url_for('book_appointment') }}" class="btn btn-primary">
+        <i class="fas fa-calendar-plus"></i> Book New Appointment
+    </a>
+</div>
+
+<section class="dashboard-section">
+    <div class="section-title">
+        <h2>Your Appointments</h2>
+        <p>View and manage your scheduled appointments</p>
+    </div>
+    
+    <div class="appointments-container">
+        {% if appointments %}
+            <div class="appointments-table-wrapper">
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.service.name }}</td>
+                                <td>{{ appointment.date.strftime('%B %d, %Y') }}</td>
+                                <td>{{ appointment.time.strftime('%I:%M %p') }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ appointment.status }}">
+                                        {{ appointment.status.capitalize() }}
+                                    </span>
+                                </td>
+                                <td>{{ appointment.notes or 'No notes' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-appointments">
+                <div class="no-data-icon">
+                    <i class="fas fa-calendar-times"></i>
+                </div>
+                <p>You don't have any appointments yet.</p>
+                <a href="{{ url_for('book_appointment') }}" class="btn btn-primary">Book Your First Appointment</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="section-title">
+        <h2>Account Information</h2>
+        <p>Manage your personal details</p>
+    </div>
+    
+    <div class="account-info-card">
+        <div class="account-info-item">
+            <div class="info-label">Name</div>
+            <div class="info-value">{{ current_user.name }}</div>
+        </div>
+        
+        <div class="account-info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value">{{ current_user.email }}</div>
+        </div>
+        
+        <div class="account-info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value">{{ current_user.phone or 'Not provided' }}</div>
+        </div>
+        
+        <div class="account-actions">
+            <button class="btn btn-secondary" id="editProfileBtn">
+                <i class="fas fa-user-edit"></i> Edit Profile
+            </button>
+            <button class="btn btn-secondary" id="changePasswordBtn">
+                <i class="fas fa-key"></i> Change Password
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Profile Modal -->
+<div class="modal" id="editProfileModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Profile</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name" name="name" value="{{ current_user.name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" name="email" value="{{ current_user.email }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-phone">Phone</label>
+                    <input type="tel" id="edit-phone" name="phone" value="{{ current_user.phone or '' }}">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal" id="changePasswordModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Change Password</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" name="current_password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" name="new_password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-new-password">Confirm New Password</label>
+                    <input type="password" id="confirm-new-password" name="confirm_new_password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Change Password</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Edit Profile Modal
+        const editProfileModal = document.getElementById('editProfileModal');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editProfileForm = document.getElementById('editProfileForm');
+        
+        // Change Password Modal
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const changePasswordForm = document.getElementById('changePasswordForm');
+        
+        // Close buttons
+        const closeButtons = document.querySelectorAll('.close-modal');
+        
+        // Open Edit Profile Modal
+        editProfileBtn.addEventListener('click', function() {
+            editProfileModal.style.display = 'block';
+        });
+        
+        // Open Change Password Modal
+        changePasswordBtn.addEventListener('click', function() {
+            changePasswordModal.style.display = 'block';
+        });
+        
+        // Close Modals
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                editProfileModal.style.display = 'none';
+                changePasswordModal.style.display = 'none';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === editProfileModal) {
+                editProfileModal.style.display = 'none';
+            }
+            if (event.target === changePasswordModal) {
+                changePasswordModal.style.display = 'none';
+            }
+        });
+        
+        // Handle Edit Profile Form Submit
+        editProfileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real application, you would send the form data to the server
+            // For this demo, we'll just show a success message
+            alert('Profile updated successfully!');
+            editProfileModal.style.display = 'none';
+        });
+        
+        // Handle Change Password Form Submit
+        changePasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('new-password').value;
+            const confirmNewPassword = document.getElementById('confirm-new-password').value;
+            
+            if (newPassword !== confirmNewPassword) {
+                alert('New passwords do not match!');
+                return;
+            }
+            
+            // In a real application, you would send the form data to the server
+            // For this demo, we'll just show a success message
+            alert('Password changed successfully!');
+            changePasswordModal.style.display = 'none';
+            changePasswordForm.reset();
+        });
+    });
+</script>
+{% endblock %}

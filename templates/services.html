@@ -1,0 +1,189 @@
+{% extends "layout.html" %}
+
+{% block title %}Plintron Technical Solutions - Services{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Our Services</h1>
+    <p>Comprehensive technical solutions for your business needs</p>
+</div>
+
+<section class="services-section">
+    <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card">
+            <div class="service-icon">
+                {% if loop.index == 1 %}
+                <i class="fas fa-laptop-code"></i>
+                {% elif loop.index == 2 %}
+                <i class="fas fa-network-wired"></i>
+                {% elif loop.index == 3 %}
+                <i class="fas fa-code"></i>
+                {% else %}
+                <i class="fas fa-cloud"></i>
+                {% endif %}
+            </div>
+            <h3>{{ service.name }}</h3>
+            <p>{{ service.description }}</p>
+            <div class="service-details">
+                <span><i class="fas fa-clock"></i> {{ service.duration }} min</span>
+                <span><i class="fas fa-dollar-sign"></i> {{ "%.2f"|format(service.price) }}</span>
+            </div>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('book_appointment') }}" class="btn btn-primary">Book Now</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login to Book</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="process-section">
+    <div class="section-title">
+        <h2>Our Process</h2>
+        <p>How we deliver exceptional results</p>
+    </div>
+    
+    <div class="process-steps">
+        <div class="process-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h3>Consultation</h3>
+                <p>We begin with a thorough consultation to understand your business needs and objectives.</p>
+            </div>
+        </div>
+        
+        <div class="process-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h3>Analysis</h3>
+                <p>Our experts analyze your requirements and develop a tailored solution strategy.</p>
+            </div>
+        </div>
+        
+        <div class="process-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h3>Implementation</h3>
+                <p>We implement the solution with precision, ensuring minimal disruption to your operations.</p>
+            </div>
+        </div>
+        
+        <div class="process-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h3>Testing</h3>
+                <p>Rigorous testing ensures the solution meets all requirements and quality standards.</p>
+            </div>
+        </div>
+        
+        <div class="process-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h3>Deployment</h3>
+                <p>We deploy the solution and provide comprehensive training for your team.</p>
+            </div>
+        </div>
+        
+        <div class="process-step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+                <h3>Support</h3>
+                <p>Ongoing support ensures your solution continues to perform optimally.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="faq-section">
+    <div class="section-title">
+        <h2>Frequently Asked Questions</h2>
+        <p>Answers to common questions about our services</p>
+    </div>
+    
+    <div class="faq-accordion">
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>What industries do you serve?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>We serve a wide range of industries including healthcare, finance, education, retail, manufacturing, and more. Our solutions are adaptable to the specific needs of each industry.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>How long does it take to implement a solution?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>The implementation timeline varies depending on the complexity of the solution and your specific requirements. During the consultation phase, we provide a detailed timeline for your project.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>Do you offer ongoing support after implementation?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>Yes, we offer comprehensive support packages to ensure your solution continues to perform optimally. Our support team is available to address any issues and provide regular maintenance.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>Can you customize solutions for our specific needs?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>Absolutely! We specialize in developing customized solutions tailored to your unique business needs. Our team works closely with you to understand your requirements and deliver a solution that meets your specific objectives.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <h3>What is your approach to data security?</h3>
+                <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+            </div>
+            <div class="faq-answer">
+                <p>We prioritize data security in all our solutions. We implement industry-standard security measures and best practices to protect your sensitive information. Our team stays updated on the latest security threats and countermeasures.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Get Started?</h2>
+        <p>Book an appointment with our experts today</p>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('book_appointment') }}" class="btn btn-primary">Book an Appointment</a>
+        {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Login to Book</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            const toggle = item.querySelector('.faq-toggle');
+            
+            question.addEventListener('click', () => {
+                answer.classList.toggle('active');
+                toggle.innerHTML = answer.classList.contains('active') ? 
+                    '<i class="fas fa-minus"></i>' : '<i class="fas fa-plus"></i>';
+            });
+        });
+    });
+</script>
+{% endblock %}
