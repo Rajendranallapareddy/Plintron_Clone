@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}Plintron Technical Solutions - Company Information{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1>Admin Dashboard - Company Information</h1>
+    <p>Manage company details and contact information</p>
+</div>
+
+<section class="admin-section">
+    <div class="company-info-form">
+        <form method="POST" action="{{ url_for('admin_company_info') }}">
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="name">Company Name</label>
+                    <input type="text" id="name" name="name" value="{{ company_info.name if company_info else '' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tagline">Tagline</label>
+                    <input type="text" id="tagline" name="tagline" value="{{ company_info.tagline if company_info else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="about">About</label>
+                    <textarea id="about" name="about" rows="6">{{ company_info.about if company_info else '' }}</textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Contact Information</h2>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3">{{ company_info.address if company_info else '' }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ company_info.email if company_info else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" value="{{ company_info.phone if company_info else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="working_hours">Working Hours</label>
+                    <input type="text" id="working_hours" name="working_hours" value="{{ company_info.working_hours if company_info else '' }}">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Social Media</h2>
+                <div class="form-group">
+                    <label for="facebook">Facebook</label>
+                    <input type="url" id="facebook" name="facebook" value="{{ company_info.facebook if company_info else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="twitter">Twitter</label>
+                    <input type="url" id="twitter" name="twitter" value="{{ company_info.twitter if company_info else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn</label>
+                    <input type="url" id="linkedin" name="linkedin" value="{{ company_info.linkedin if company_info else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="instagram">Instagram</label>
+                    <input type="url" id="instagram" name="instagram" value="{{ company_info.instagram if company_info else '' }}">
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
